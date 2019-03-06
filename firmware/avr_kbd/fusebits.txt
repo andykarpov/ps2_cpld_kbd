@@ -1,0 +1,8 @@
+Atmega328p
+
+Low: 0xBF (the only difference against Arduino Nano to allow CKOUT on pin D8)
+High: 0xDA
+Extended: 0xFD
+
+avrdude arguments: -U lfuse:w:0xbf:m -U hfuse:w:0xda:m -U efuse:w:0xfd:m
+
