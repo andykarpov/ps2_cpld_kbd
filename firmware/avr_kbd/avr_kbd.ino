@@ -16,8 +16,8 @@
 #define DEBUG_MODE 0
 
 // ---- Pins for Atmega328
-#define PIN_KBD_CLK 2 // PD2
-#define PIN_KBD_DAT 3 // PD2
+#define PIN_KBD_CLK 3 // PD2
+#define PIN_KBD_DAT 2 // PD2
 
 // hardware SPI
 #define PIN_SS 10 // SPI slave select
