@@ -6,3 +6,5 @@ Extended: 0xFD
 
 avrdude arguments: -U lfuse:w:0xbf:m -U hfuse:w:0xda:m -U efuse:w:0xfd:m
 
+Example:
+avrdude -p atmega328p -c USBasp -U flash:w:avr_kbd_mega328p.hex -U lfuse:w:0xbf:m -U hfuse:w:0xda:m -U efuse:w:0xfd:m
