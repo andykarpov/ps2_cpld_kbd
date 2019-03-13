@@ -13872,7 +13872,7 @@ Source: AVX .. aphvc.pdf</description>
 <part name="U1" library="SparkFun-IC-Microcontroller" library_urn="urn:adsk.eagle:library:525" deviceset="ATMEGA328P_TQFP" device="" package3d_urn="urn:adsk.eagle:package:38945/1" value="ATMEGA328"/>
 <part name="U2" library="altera" library_urn="urn:adsk.eagle:library:97" deviceset="EPM7128-?100" device="T" package3d_urn="urn:adsk.eagle:package:8081283/1" value="EPM7128"/>
 <part name="J3" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-2X10" device="" package3d_urn="urn:adsk.eagle:package:22405/2" value="Emulated Mechanical Keyboard"/>
-<part name="J4" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="" package3d_urn="urn:adsk.eagle:package:22435/2" value="Power"/>
+<part name="J4" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="" package3d_urn="urn:adsk.eagle:package:22435/2" value="VCC GND"/>
 <part name="Y1" library="SparkFun-Clocks" library_urn="urn:adsk.eagle:library:511" deviceset="CRYSTAL-16MHZ" device="PTH-HC49US" package3d_urn="urn:adsk.eagle:package:37515/1" value="16MHz"/>
 <part name="J5" library="con-yamaichi" library_urn="urn:adsk.eagle:library:202" deviceset="MD06SS" device="" package3d_urn="urn:adsk.eagle:package:11778/1" value="PS/2"/>
 <part name="LED1" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="CHIPLED_0805" package3d_urn="urn:adsk.eagle:package:15821/2"/>
@@ -14639,7 +14639,7 @@ Source: AVX .. aphvc.pdf</description>
 <label x="154.94" y="96.52" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="PS2_CLK" class="0">
+<net name="PS2_DATA" class="0">
 <segment>
 <pinref part="U1" gate="U$1" pin="PD2(INT0)"/>
 <wire x1="88.9" y1="132.08" x2="104.14" y2="132.08" width="0.1524" layer="91"/>
@@ -14655,7 +14655,7 @@ Source: AVX .. aphvc.pdf</description>
 <label x="99.06" y="27.94" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="PS2_DATA" class="0">
+<net name="PS2_CLK" class="0">
 <segment>
 <pinref part="U1" gate="U$1" pin="PD3(INT1)"/>
 <wire x1="88.9" y1="129.54" x2="104.14" y2="129.54" width="0.1524" layer="91"/>
