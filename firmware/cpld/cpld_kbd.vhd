@@ -9,7 +9,7 @@ entity cpld_kbd is
 			CLK	     : in std_logic;
 
          A           : in std_logic_vector(15 downto 8);     				-- address bus for kbd
-         KB          : out std_logic_vector(4 downto 0) := "ZZZZZ";     -- data bus for kbd
+         KB          : out std_logic_vector(4 downto 0) := "11111";     -- data bus for kbd
 
          AVR_MOSI    : in std_logic;
          AVR_MISO    : out std_logic;
@@ -19,7 +19,11 @@ entity cpld_kbd is
 			O_RESET		: out std_logic;
 			O_TURBO	 	: out std_logic;
 			O_MAGICK		: out std_logic;
-			O_SPECIAL	: out std_logic
+			O_SPECIAL	: out std_logic;
+			
+			O_CLK			: out std_logic;
+			O_TEST 		: out std_logic;
+			O_DEBUG 		: out std_logic
 	);
     end cpld_kbd;
 
@@ -91,8 +95,14 @@ begin
 		O_MAGICK <= not(magick);
 		O_TURBO <= not(turbo);
 		O_SPECIAL <= not(special);
+
+		O_TEST <= reset;
+		O_DEBUG <= kb_data(6); -- enter pressed
+
 	end if;
 end process;
+
+O_CLK <= CLK;
 		  
 --    
 process( kb_data, A)
