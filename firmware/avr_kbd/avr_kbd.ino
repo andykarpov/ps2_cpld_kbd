@@ -35,7 +35,7 @@
 
 PS2KeyRaw kbd;
 
-bool matrix[ZX_MATRIX_SIZE]; // matrix of pressed keys + special keys to be transmitted on CPLD side by SPI protocol
+bool matrix[ZX_MATRIX_FULL_SIZE]; // matrix of pressed keys + special keys to be transmitted on CPLD side by SPI protocol
 
 bool blink_state = false;
 
@@ -423,7 +423,7 @@ void do_reset()
   clear_matrix(ZX_MATRIX_SIZE);
   matrix[ZX_K_RESET] = true;
   transmit_keyboard_matrix();
-  delay(10);
+  delay(500);
   matrix[ZX_K_RESET] = false;
   transmit_keyboard_matrix();  
 }
@@ -432,7 +432,7 @@ void do_magick()
 {
   matrix[ZX_K_MAGICK] = true;
   transmit_keyboard_matrix();
-  delay(10);
+  delay(500);
   matrix[ZX_K_MAGICK] = false;
   transmit_keyboard_matrix();
 }
