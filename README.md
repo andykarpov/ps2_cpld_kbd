@@ -3,6 +3,8 @@
 PS/2 keyboard adapter for ZX Spectrum on Atmega328 + EPM7128STC100.
 Designed to be connected directly instead of a mechanical keyboard.
 
+![image](https://github.com/andykarpov/ps2_cpld_kbd/raw/master/docs/ps2_cpld_kbd.jpg)
+
 Based on the idea of the Yet another ZX-Spectrum AT Keyboard Interface http://www.jrok.com/project/speckey/spec_key.html
 
 ## How to program
