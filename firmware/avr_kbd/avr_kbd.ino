@@ -53,7 +53,7 @@ void fill_kbd_matrix(int sc)
 {
 
   static bool is_up=false, is_e=false, is_e1=false;
-  static bool is_ctrl=false, is_alt=false, is_del=false, is_bksp = false, is_shift = false, is_esc = false, is_shift_used = false, is_cs_used = false;
+  static bool is_ctrl=false, is_alt=false, is_del=false, is_bksp = false, is_shift = false, is_esc = false, is_ss_used = false, is_cs_used = false;
 
   // is extended scancode prefix
   if (sc == 0xE0) {
@@ -75,7 +75,7 @@ void fill_kbd_matrix(int sc)
 
   int scancode = sc + ((is_e || is_e1) ? 0x100 : 0);
 
-  is_shift_used = false;
+  is_ss_used = false;
   is_cs_used = false;
 
   switch (scancode) {
@@ -228,14 +228,14 @@ void fill_kbd_matrix(int sc)
     case PS2_QUOTE:
       matrix[ZX_K_SS] = !is_up;
       matrix[is_shift ? ZX_K_P : ZX_K_7] = !is_up;
-      is_shift_used = is_shift;
+      is_ss_used = is_shift;
       break;
 
     // ,/< -> SS+N / SS+R
     case PS2_COMMA:
       matrix[ZX_K_SS] = !is_up;
       matrix[is_shift ? ZX_K_R : ZX_K_N] = !is_up;
-      is_shift_used = is_shift;
+      is_ss_used = is_shift;
       break;
 
     // ./> -> SS+M / SS+T
@@ -243,28 +243,28 @@ void fill_kbd_matrix(int sc)
     case PS2_KP_PERIOD:
       matrix[ZX_K_SS] = !is_up;
       matrix[is_shift ? ZX_K_T : ZX_K_M] = !is_up;
-      is_shift_used = is_shift;
+      is_ss_used = is_shift;
       break;
 
     // ;/: -> SS+O / SS+Z
     case PS2_SEMICOLON:
       matrix[ZX_K_SS] = !is_up;
       matrix[is_shift ? ZX_K_Z : ZX_K_O] = !is_up;
-      is_shift_used = is_shift;
+      is_ss_used = is_shift;
       break;
 
     // [,{ -> SS+Y / SS+F
     case PS2_L_BRACKET:
-      matrix[ZX_K_SS] = !is_up;
-      matrix[is_shift ? ZX_K_F : ZX_K_Y] = !is_up;
-      is_shift_used = is_shift;
+      if (!is_up) {
+        send_macros(is_shift ? ZX_K_F : ZX_K_Y);
+      }
       break;
 
     // ],} -> SS+U / SS+G
     case PS2_R_BRACKET:
-      matrix[ZX_K_SS] = !is_up;
-      matrix[is_shift ? ZX_K_G : ZX_K_U] = !is_up;
-      is_shift_used = is_shift;
+      if (!is_up) {
+        send_macros(is_shift ? ZX_K_G : ZX_K_U);
+      }
       break;
 
     // /,? -> SS+V / SS+C
@@ -272,35 +272,40 @@ void fill_kbd_matrix(int sc)
     case PS2_KP_SLASH:
       matrix[ZX_K_SS] = !is_up;
       matrix[is_shift ? ZX_K_C : ZX_K_V] = !is_up;
-      is_shift_used = is_shift;
+      is_ss_used = is_shift;
       break;
 
     // \,| -> SS+D / SS+S
     case PS2_BACK_SLASH:
-      matrix[ZX_K_SS] = !is_up;
-      matrix[is_shift ? ZX_K_S : ZX_K_D] = !is_up;
-      is_shift_used = is_shift;
+      if (!is_up) {
+        send_macros(is_shift ? ZX_K_S : ZX_K_D);
+      }
       break;
 
     // =,+ -> SS+L / SS+K
     case PS2_EQUALS:
       matrix[ZX_K_SS] = !is_up;
       matrix[is_shift ? ZX_K_K : ZX_K_L] = !is_up;
-      is_shift_used = is_shift;
+      is_ss_used = is_shift;
       break;
 
     // -,_ -> SS+J / SS+0
     case PS2_MINUS:
       matrix[ZX_K_SS] = !is_up;
       matrix[is_shift ? ZX_K_0 : ZX_K_J] = !is_up;
-      is_shift_used = is_shift;
+      is_ss_used = is_shift;
       break;
 
     // `,~ -> SS+X / SS+A
     case PS2_ACCENT:
-      matrix[ZX_K_SS] = !is_up;
-      matrix[is_shift ? ZX_K_A : ZX_K_X] = !is_up;
-      is_shift_used = is_shift;
+      if (is_shift and !is_up) {
+        send_macros(is_shift ? ZX_K_A : ZX_K_X);
+      }
+      if (!is_shift) {
+        matrix[ZX_K_SS] = !is_up;
+        matrix[ZX_K_X] = !is_up;
+        is_ss_used = is_shift;
+      }
       break;
 
     // Keypad * -> SS+B
@@ -376,7 +381,7 @@ void fill_kbd_matrix(int sc)
   
   }
 
-  if (is_shift_used and !is_cs_used) {
+  if (is_ss_used and !is_cs_used) {
       matrix[ZX_K_CS] = false;
   }
 
@@ -386,7 +391,7 @@ void fill_kbd_matrix(int sc)
     is_alt = false;
     is_del = false;
     is_shift = false;
-    is_shift_used = false;
+    is_ss_used = false;
     is_cs_used = false;
     do_reset();
   }
@@ -397,7 +402,7 @@ void fill_kbd_matrix(int sc)
       is_alt = false;
       is_bksp = false;
       is_shift = false;
-      is_shift_used = false;
+      is_ss_used = false;
       is_cs_used = false;
       clear_matrix(ZX_MATRIX_SIZE);
       matrix[ZX_K_RESET] = true;
@@ -450,6 +455,30 @@ void transmit_keyboard_matrix()
       uint8_t data = get_matrix_byte(i);
       spi_send(i+1, data);
     }
+}
+
+// transmit keyboard macros (sequence of keyboard clicks) to emulate typing some special symbols [, ], {, }, ~, |, `
+void send_macros(uint8_t pos)
+{
+  clear_matrix(ZX_MATRIX_SIZE);
+  transmit_keyboard_matrix();
+  delay(20);
+  matrix[ZX_K_CS] = true;
+  transmit_keyboard_matrix();
+  delay(20);
+  matrix[ZX_K_SS] = true;
+  transmit_keyboard_matrix();
+  delay(20);
+  matrix[ZX_K_SS] = false;
+  transmit_keyboard_matrix();
+  delay(20);
+  matrix[pos] = true;
+  transmit_keyboard_matrix();
+  delay(20);
+  matrix[ZX_K_CS] = false;
+  matrix[pos] = false;
+  transmit_keyboard_matrix();
+  delay(20);
 }
 
 void do_reset()
