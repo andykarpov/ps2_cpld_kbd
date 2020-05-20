@@ -9,7 +9,7 @@ entity cpld_kbd is
 			CLK	     : in std_logic;
 
          A           : in std_logic_vector(15 downto 8);     				-- address bus for kbd
-         KB          : out std_logic_vector(4 downto 0) := "11111";     -- data bus for kbd
+         KB          : out std_logic_vector(4 downto 0) := "ZZZZZ";     -- data bus for kbd
 
          AVR_MOSI    : in std_logic;
          AVR_MISO    : out std_logic;
@@ -107,51 +107,80 @@ O_CLK <= CLK;
 --    
 process( kb_data, A)
 begin
+	if ( 
+		(kb_data(0) = '1' and A(8) = '0') or 
+		(kb_data(1) = '1' and A(9) = '0') or 
+		(kb_data(2) = '1' and A(10) = '0') or 
+		(kb_data(3) = '1' and A(11) = '0') or 
+		(kb_data(4) = '1' and A(12) = '0') or 
+		(kb_data(5) = '1' and A(13) = '0') or 
+		(kb_data(6) = '1' and A(14) = '0') or 
+		(kb_data(7) = '1' and A(15) = '0')
+		) then 
+		KB(0) <= '0';
+	else
+		KB(0) <= 'Z';
+	end if;
 
-				KB(0) <=	not(( kb_data(0)  and not(A(8)  ) ) 
-							or    ( kb_data(1)  and not(A(9)  ) ) 
-							or    ( kb_data(2) and not(A(10) ) ) 
-							or    ( kb_data(3) and not(A(11) ) ) 
-							or    ( kb_data(4) and not(A(12) ) ) 
-							or    ( kb_data(5) and not(A(13) ) ) 
-							or    ( kb_data(6) and not(A(14) ) ) 
-							or    ( kb_data(7) and not(A(15) ) )  );
+	if ( 
+		(kb_data(8) = '1' and A(8) = '0') or 
+		(kb_data(9) = '1' and A(9) = '0') or 
+		(kb_data(10) = '1' and A(10) = '0') or 
+		(kb_data(11) = '1' and A(11) = '0') or 
+		(kb_data(12) = '1' and A(12) = '0') or 
+		(kb_data(13) = '1' and A(13) = '0') or 
+		(kb_data(14) = '1' and A(14) = '0') or 
+		(kb_data(15) = '1' and A(15) = '0')
+		) then 
+		KB(1) <= '0';
+	else
+		KB(1) <= 'Z';
+	end if;	
 
-				KB(1) <=	not( ( kb_data(8)  and not(A(8) ) ) 
-							or   ( kb_data(9)  and not(A(9) ) ) 
-							or   ( kb_data(10) and not(A(10)) ) 
-							or   ( kb_data(11) and not(A(11)) ) 
-							or   ( kb_data(12) and not(A(12)) ) 
-							or   ( kb_data(13) and not(A(13)) ) 
-							or   ( kb_data(14) and not(A(14)) ) 
-							or   ( kb_data(15) and not(A(15)) ) );
+	if ( 
+		(kb_data(16) = '1' and A(8) = '0') or 
+		(kb_data(17) = '1' and A(9) = '0') or 
+		(kb_data(18) = '1' and A(10) = '0') or 
+		(kb_data(19) = '1' and A(11) = '0') or 
+		(kb_data(20) = '1' and A(12) = '0') or 
+		(kb_data(21) = '1' and A(13) = '0') or 
+		(kb_data(22) = '1' and A(14) = '0') or 
+		(kb_data(23) = '1' and A(15) = '0')
+		) then 
+		KB(2) <= '0';
+	else
+		KB(2) <= 'Z';
+	end if;	
+	
+	if ( 
+		(kb_data(24) = '1' and A(8) = '0') or 
+		(kb_data(25) = '1' and A(9) = '0') or 
+		(kb_data(26) = '1' and A(10) = '0') or 
+		(kb_data(27) = '1' and A(11) = '0') or 
+		(kb_data(28) = '1' and A(12) = '0') or 
+		(kb_data(29) = '1' and A(13) = '0') or 
+		(kb_data(30) = '1' and A(14) = '0') or 
+		(kb_data(31) = '1' and A(15) = '0')
+		) then 
+		KB(3) <= '0';
+	else
+		KB(3) <= 'Z';
+	end if;	
 
-				KB(2) <=		not( ( kb_data(16) and not( A(8)) ) 
-							or   ( kb_data(17) and not( A(9)) ) 
-							or   ( kb_data(18) and not(A(10)) ) 
-							or   ( kb_data(19) and not(A(11)) ) 
-							or   ( kb_data(20) and not(A(12)) ) 
-							or   ( kb_data(21) and not(A(13)) ) 
-							or   ( kb_data(22) and not(A(14)) ) 
-							or   ( kb_data(23) and not(A(15)) ) );
-
-				KB(3) <=		not( ( kb_data(24) and not( A(8)) ) 
-							or   ( kb_data(25) and not( A(9)) ) 
-							or   ( kb_data(26) and not(A(10)) ) 
-							or   ( kb_data(27) and not(A(11)) ) 
-							or   ( kb_data(28) and not(A(12)) ) 
-							or   ( kb_data(29) and not(A(13)) ) 
-							or   ( kb_data(30) and not(A(14)) ) 
-							or   ( kb_data(31) and not(A(15)) ) );
-
-				KB(4) <=		not( ( kb_data(32) and not( A(8)) ) 
-							or   ( kb_data(33) and not( A(9)) ) 
-							or   ( kb_data(34) and not(A(10)) ) 
-							or   ( kb_data(35) and not(A(11)) ) 
-							or   ( kb_data(36) and not(A(12)) ) 
-							or   ( kb_data(37) and not(A(13)) ) 
-							or   ( kb_data(38) and not(A(14)) ) 
-							or   ( kb_data(39) and not(A(15)) ) );
+	if ( 
+		(kb_data(32) = '1' and A(8) = '0') or 
+		(kb_data(33) = '1' and A(9) = '0') or 
+		(kb_data(34) = '1' and A(10) = '0') or 
+		(kb_data(35) = '1' and A(11) = '0') or 
+		(kb_data(36) = '1' and A(12) = '0') or 
+		(kb_data(37) = '1' and A(13) = '0') or 
+		(kb_data(38) = '1' and A(14) = '0') or 
+		(kb_data(39) = '1' and A(15) = '0')
+		) then 
+		KB(4) <= '0';
+	else
+		KB(4) <= 'Z';
+	end if;	
 
 end process;
 
